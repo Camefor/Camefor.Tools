@@ -4,4 +4,8 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1;net461;net5</TargetFrameworks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Util\Config\" />
+  </ItemGroup>
+
 </Project>

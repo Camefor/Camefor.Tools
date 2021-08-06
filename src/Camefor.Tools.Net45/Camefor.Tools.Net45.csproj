@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="TestTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Attributes\EnumAttribute.cs" />
+    <Compile Include="Util\Common\CommonHelper.cs" />
+    <Compile Include="Util\Common\PerformanceTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
