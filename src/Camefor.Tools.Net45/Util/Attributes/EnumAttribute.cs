@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using System.Text;
 
-namespace Camefor.Tools.NetCore.Util.Attributes
+namespace Camefor.Tools.Net45.Util
 {
     /// <summary>
     /// 描   述  ： 获取实体类Attribute自定义属性                          

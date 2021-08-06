@@ -8,4 +8,9 @@
     <Folder Include="Util\Config\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NPOI" Version="2.5.4" />
+  </ItemGroup>
+
 </Project>
