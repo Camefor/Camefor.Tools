@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Camefor.Tools.NetCore.Util
 {
@@ -18,6 +19,28 @@ namespace Camefor.Tools.NetCore.Util
     /// </summary>    
     public static class CommonHelper
     {
+
+        /// <summary>
+        /// 指定一个日期执行代码
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="ExecutionTime"></param>
+        public async static void ScheduleAction(Action action, DateTime ExecutionTime)
+        {
+            int delay = (int)ExecutionTime.Subtract(DateTime.Now).TotalMilliseconds;
+            if (delay < -1)
+            {
+                //不是有效值 已经超过了要执行的时间 就返回
+                return;
+            }
+            else
+            {
+                await Task.Delay(delay);
+                action();
+            }
+        }
+
+
         #region Stopwatch计时器
         /// <summary>
         /// 计时器开始
