@@ -104,5 +104,7 @@ namespace Camefor.Tools.NetCore.Util.Web
             Task<string> result = httpClient.GetAsync(url).Result.Content.ReadAsStringAsync();
             return result.Result;
         }
+
+
     }
 }
