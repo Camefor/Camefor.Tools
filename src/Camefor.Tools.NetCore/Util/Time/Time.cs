@@ -19,6 +19,27 @@ namespace Camefor.Tools.NetCore.Util
     public class Time
     {
 
+        /// <summary>
+        /// Unix timestamp 时间戳转换为系统所在区域时间
+        /// https://stackoverflow.com/questions/54397001/converting-utc-datetime-to-local-datetime-in-c-sharp
+        /// </summary>
+        /// <param name="TimeStamp">时间戳</param>
+        /// <param name="AccurateToMilliseconds">是否精确到毫秒</param>
+        /// <returns>返回一个日期时间</returns>
+        public static DateTime GetTime(long TimeStamp, bool AccurateToMilliseconds = false)
+        {
+            TimeZoneInfo systemTimeZone = TimeZoneInfo.Local;
+            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new System.DateTime(1970, 1, 1), systemTimeZone);
+            if (AccurateToMilliseconds)
+            {
+                return startTime.AddTicks(TimeStamp * 10000);
+            }
+            else
+            {
+                return startTime.AddTicks(TimeStamp * 10000000);
+            }
+        }
+
         #region 当前时间
         /// <summary>
         /// 当前时间
