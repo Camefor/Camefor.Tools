@@ -300,7 +300,7 @@ namespace Camefor.Tools.NetCore.Util
         /// <returns></returns>
         public static bool IsExistFileEx(string filePath)
         {
-            string rootPath = Assembly.GetExecutingAssembly().CodeBase.Replace("/bin/HZYCZK.Util.DLL", "").Replace("file:///", "");
+            string rootPath = Assembly.GetExecutingAssembly().CodeBase.Replace("/bin/Camefor.Tools.NetCore.Util.DLL", "").Replace("file:///", "");
             return File.Exists(rootPath + filePath);
         }
         #endregion
