@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace Camefor.Tools.NetCore.Util
@@ -18,6 +20,49 @@ namespace Camefor.Tools.NetCore.Util
 
     public static partial class Extensions
     {
+
+
+        /// <summary>
+        /// 拆分一个较的大数据集合为几个小数据集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="takeCount">拆分的一个小数据集合所含元素数量</param>
+        /// <returns></returns>
+        public static List<IEnumerable<T>> SplitList<T>(this IEnumerable<T> source, int takeCount = 1000)
+        {
+            List<IEnumerable<T>> listOfLists = new List<IEnumerable<T>>();
+            for (int i = 0; i < source.Count(); i += takeCount)
+            {
+                listOfLists.Add(source.Skip(i).Take(takeCount));
+            }
+
+
+            //var splitedTotal = listOfLists.Select(c => c.Count()).Sum();
+            //if (source.Count() == splitedTotal)
+            //{
+            //}
+            //else
+            //{
+            //    //throw new InvalidOperationException("拆分一个较的大数据集合为几个小数据集合处理异常");
+            //}
+
+            return listOfLists;
+
+        }
+
+
+        /// <summary>
+        /// DataRow 数据获取特定列的数据 处理行不包含列异常情况
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static object GetValue(this DataRow row, string column)
+        {
+            return row.Table.Columns.Contains(column) ? row[column] : null;
+        }
+
         /// <summary>
         /// 安全返回值
         /// </summary>
