@@ -18,6 +18,35 @@ namespace Camefor.Tools.NetCore.Util
 
     public static partial class Extensions
     {
+
+        /// <summary>
+        /// Unix时间戳转换为时间
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public static DateTime UnixTimestampConvertToDate(this double timestamp)
+        {
+            //DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));//过时的
+            //DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.FindSystemTimeZoneById("China Standard Time")); //硬编码时区标识id
+            DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local); //表示本地时区
+            long lTime = long.Parse(timestamp.ToStr() + "0000000");
+            TimeSpan toNow = new TimeSpan(lTime);
+            return dtStart.Add(toNow);
+        }
+
+
+        /// <summary>
+        /// 时间转换为Unix时间戳
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static double DateConvertToUnixTimestamp(this DateTime date)
+        {
+            var unixTimestamp = (date.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            return unixTimestamp;
+        }
+
+
         /// <summary>
         /// 获取格式化字符串，带时分秒，格式："yyyy-MM-dd HH:mm:ss"
         /// </summary>
