@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Camefor.Tools.NetCore.Util
 {
@@ -20,6 +21,82 @@ namespace Camefor.Tools.NetCore.Util
 
     public static partial class Extensions
     {
+
+        /// <summary>
+        ///  JToken对象转换具体值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="containerToken"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T FindFirstTokenValue<T>(this JToken containerToken, string name)
+        {
+            var r = FindFirstToken(containerToken, name);
+            if (r == null) return default(T);
+            return r.Value<T>();
+        }
+
+        /// <summary>
+        /// JToken集合 对象转换具体值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="containerToken"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T FindTokensValues<T>(this JToken containerToken, string name)
+        {
+            var r = FindTokens(containerToken, name);
+            if (r == null) return default(T);
+            return r.Value<T>();
+        }
+
+
+        /// <summary>
+        /// 根据Json的Key获取包含Value的JToken对象，返回对象集合中的默认一个，不存在返回Null。
+        /// </summary>
+        /// <param name="containerToken"></param>
+        /// <param name="name"></param>
+        /// <returns>返回对象集合中的默认一个 JToken </returns>
+        public static JToken FindFirstToken(this JToken containerToken, string name)
+        {
+            return FindTokens(containerToken, name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 根据Json的Key获取包含Value的JToken对象，返回对象集合。
+        /// </summary>
+        /// <param name="containerToken"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static List<JToken> FindTokens(this JToken containerToken, string name)
+        {
+            List<JToken> matches = new List<JToken>();
+            FindTokens(containerToken, name, matches);
+            return matches;
+        }
+
+        private static void FindTokens(JToken containerToken, string name, List<JToken> matches)
+        {
+            if (containerToken.Type == JTokenType.Object)
+            {
+                foreach (JProperty child in containerToken.Children<JProperty>())
+                {
+                    if (child.Name == name)
+                    {
+                        matches.Add(child.Value);
+                    }
+                    FindTokens(child.Value, name, matches);
+                }
+            }
+            else if (containerToken.Type == JTokenType.Array)
+            {
+                foreach (JToken child in containerToken.Children())
+                {
+                    FindTokens(child, name, matches);
+                }
+            }
+        }
+
         /// <summary>
         /// 转成json对象
         /// </summary>
