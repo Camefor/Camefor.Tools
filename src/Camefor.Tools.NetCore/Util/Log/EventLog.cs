@@ -19,36 +19,44 @@ namespace Camefor.Tools.NetCore.Util.Log
     /// </summary>
     public class EventLog
     {
-        static public string LogServer = "127.0.0.1";
-        static public int LogPort = 8989;
-        private string _logFile = null;
         static public bool Debug = true;
+        static public bool isServiceName = false;
         private StreamWriter _logWriter = null;
+
+        /// <summary>
+        /// 日志根目录:默认为当前程序目录
+        /// </summary>
+        public static string _logRootPath = AppDomain.CurrentDomain.BaseDirectory;
 
         public EventLog()
         {
-            //if ((Assembly.GetEntryAssembly() != null) && (Assembly.GetEntryAssembly().Location != null))
-            //_logFile = Assembly.GetEntryAssembly().Location;
-            _logFile = AppDomain.CurrentDomain.BaseDirectory + "EventLog\\";
+            _logRootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            if (!Directory.Exists(_logRootPath)) Directory.CreateDirectory(_logRootPath);
 
-            if (!Directory.Exists(_logFile))
-            {
-                Directory.CreateDirectory(_logFile);
-            }
-            //Debug = Convert.ToBoolean(ConfigurationManager.AppSettings["DebugFlag"]);
         }
 
-        public EventLog(string Path)
+        /// <summary>
+        /// 每个服务模块分开文件夹存放日志
+        /// </summary>
+        /// <param name="ServiceName"></param>
+        public EventLog(bool aisServiceName, string ServiceName)
         {
-            //if ((Assembly.GetEntryAssembly() != null) && (Assembly.GetEntryAssembly().Location != null))
-            //_logFile = Assembly.GetEntryAssembly().Location;
-            _logFile = AppDomain.CurrentDomain.BaseDirectory + Path + "\\";
+            _logRootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            if (!Directory.Exists(_logRootPath)) Directory.CreateDirectory(_logRootPath);
 
-            if (!Directory.Exists(_logFile))
-            {
-                Directory.CreateDirectory(_logFile);
-            }
-            //Debug = Convert.ToBoolean(ConfigurationManager.AppSettings["DebugFlag"]);
+            if (aisServiceName) _logRootPath = Path.Combine(_logRootPath, ServiceName);
+            if (!Directory.Exists(_logRootPath)) Directory.CreateDirectory(_logRootPath);
+
+        }
+
+        /// <summary>
+        /// 代替 默认的当前程序目录
+        /// </summary>
+        /// <param name="alogRootPath"></param>
+        public EventLog(string alogRootPath)
+        {
+            _logRootPath = Path.Combine(alogRootPath, "Logs");
+            if (!Directory.Exists(_logRootPath)) Directory.CreateDirectory(_logRootPath);
         }
 
         ~EventLog()
@@ -62,15 +70,17 @@ namespace Camefor.Tools.NetCore.Util.Log
             if (!Msg.Equals(""))
             {
                 if (_logWriter != null)
+                {
                     _logWriter.WriteLine(Section + Msg);
+                }
             }
         }
         private void AddLog(string ModuleName, string Msg, string OtherMsg, bool IsError)
         {
             try
             {
-                if (_logFile != null)
-                    _logWriter = File.AppendText(_logFile + DateTime.Today.Year + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ".log");
+                if (_logRootPath != null) _logWriter = File.AppendText(Path.Combine(_logRootPath, DateTime.Today.Year + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ".log"));
+
                 string kind = IsError ? "错误" : "正常";
                 WriteLog("类别：", kind);
                 WriteLog("时间：", DateTime.Now.ToString());
