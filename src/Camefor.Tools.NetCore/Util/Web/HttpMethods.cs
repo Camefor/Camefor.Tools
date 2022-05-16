@@ -94,6 +94,18 @@ namespace Camefor.Tools.NetCore.Util.Web
         }
 
         /// <summary>
+        /// get 请求 异步方式
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<string> GetString(string url)
+        {
+            HttpClient httpClient = CreateHttpClient(url);
+            var responseMessage = await httpClient.GetAsync(url);
+            return await responseMessage.Content.ReadAsStringAsync();
+        }
+
+        /// <summary>
         /// get 请求
         /// </summary>
         /// <param name="url">请求地址</param>
@@ -103,6 +115,38 @@ namespace Camefor.Tools.NetCore.Util.Web
             HttpClient httpClient = CreateHttpClient(url);
             Task<string> result = httpClient.GetAsync(url).Result.Content.ReadAsStringAsync();
             return result.Result;
+        }
+
+
+        /// <summary>
+        /// using WebResut
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<dynamic> GetForDetail(string url)
+        {
+            WebRequest request = WebRequest.Create(url);
+
+            request.Method = "GET";
+            var response = await request.GetResponseAsync();
+
+            var ContentType = response.ContentType;
+            var ContentLength = response.ContentLength;
+            var headerCollection = response.Headers;
+
+
+            List<string> headers = new List<string>();
+            foreach (var item in headerCollection.AllKeys)
+            {
+                headers.Add($" key:{item}  ==== value:{headerCollection[item]}");
+            }
+
+
+            foreach (var item in headers)
+            {
+                Console.WriteLine(item);
+            }
+            return response.GetResponseStream();
         }
 
 
