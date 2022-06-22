@@ -20,31 +20,55 @@ namespace Camefor.Tools.NetCore.Util
     {
 
         /// <summary>
-        /// Unix时间戳转换为时间
+        /// Unix时间戳（秒）转换为时间
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public static DateTime UnixTimestampConvertToDate(this double timestamp)
+        public static DateTime FromSecondsUnixTimestampConvertToDate(this long timestamp)
         {
-            //DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));//过时的
-            //DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.FindSystemTimeZoneById("China Standard Time")); //硬编码时区标识id
-            DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local); //表示本地时区
-            long lTime = long.Parse(timestamp.ToStr() + "0000000");
-            TimeSpan toNow = new TimeSpan(lTime);
-            return dtStart.Add(toNow);
+            TimeSpan time = TimeSpan.FromSeconds(timestamp);
+            DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            return dtStart.Add(time);
+        }
+        /// <summary>
+        /// Unix时间戳（毫秒）转换为时间
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public static DateTime FromMillisecondsUnixTimestampConvertToDate(this long timestamp)
+        {
+            TimeSpan time = TimeSpan.FromMilliseconds(timestamp);
+            DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            return dtStart.Add(time);
         }
 
 
         /// <summary>
-        /// 时间转换为Unix时间戳
+        /// 时间转换为Unix时间戳 (秒级)
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public static double DateConvertToUnixTimestamp(this DateTime date)
+        public static double ConvertToUnixTimestamp(this DateTime date)
         {
             var unixTimestamp = (date.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
             return unixTimestamp;
         }
+
+
+        /// <summary>
+        /// 时间转换为毫秒级时间戳
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+
+        public static long ConvertToUnixMillisecondTimestamp(this DateTime dateTime)
+        {
+            //北京时间相差8小时
+            DateTime startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1, 8, 0, 0, 0), TimeZoneInfo.Local);
+            long t = (dateTime.Ticks - startTime.Ticks) / 10000;   //除10000调整为13位   
+            return t;
+        }
+
 
 
         /// <summary>
