@@ -1,17 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net461;net5</TargetFrameworks>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="Util\Config\" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NPOI" Version="2.5.4" />
   </ItemGroup>
-
 </Project>
