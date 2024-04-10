@@ -31,10 +31,7 @@ namespace TestAppNetCore
             //eventLog1.AddLog("测试sss", "hello");
 
 
-            var url = @"http://49.232.106.166:5244/d/myfiles/2009-11-13李志动物凶猛全国巡演郑州站—《关于郑州的记忆》.mp4";
-            var stream = await HttpMethods.GetForDetail(url);
-
-            Console.WriteLine("请求结束");
+            await Task.CompletedTask;
 
         }
     }
