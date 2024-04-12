@@ -100,11 +100,11 @@ namespace Camefor.Tools.NetCore.Util
         /// <summary>
         /// 转成json对象
         /// </summary>
-        /// <param name="Json">json字串</param>
+        /// <param name="json">json字串</param>
         /// <returns></returns>
-        public static object ToJson(this string Json)
+        public static object ToJson(this string json)
         {
-            return Json == null ? null : JsonConvert.DeserializeObject(Json);
+            return json == null ? null : JsonConvert.DeserializeObject(json);
         }
         /// <summary>
         /// 转成json字串
@@ -131,39 +131,39 @@ namespace Camefor.Tools.NetCore.Util
         /// 字串反序列化成指定对象实体
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="Json">字串</param>
+        /// <param name="json">字串</param>
         /// <returns></returns>
-        public static T ToObject<T>(this string Json)
+        public static T ToObject<T>(this string json)
         {
-            return Json == null ? default(T) : JsonConvert.DeserializeObject<T>(Json);
+            return json == null ? default(T) : JsonConvert.DeserializeObject<T>(json);
         }
         /// <summary>
         /// 字串反序列化成指定对象实体(列表)
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="Json">字串</param>
+        /// <param name="json">字串</param>
         /// <returns></returns>
-        public static List<T> ToList<T>(this string Json)
+        public static List<T> ToList<T>(this string json)
         {
-            return Json == null ? null : JsonConvert.DeserializeObject<List<T>>(Json);
+            return json == null ? null : JsonConvert.DeserializeObject<List<T>>(json);
         }
         /// <summary>
         /// 字串反序列化成DataTable
         /// </summary>
-        /// <param name="Json">字串</param>
+        /// <param name="json">字串</param>
         /// <returns></returns>
-        public static DataTable ToTable(this string Json)
+        public static DataTable ToTable(this string json)
         {
-            return Json == null ? null : JsonConvert.DeserializeObject<DataTable>(Json);
+            return json == null ? null : JsonConvert.DeserializeObject<DataTable>(json);
         }
         /// <summary>
         /// 字串反序列化成linq对象
         /// </summary>
-        /// <param name="Json">字串</param>
+        /// <param name="json">字串</param>
         /// <returns></returns>
-        public static JObject ToJObject(this string Json)
+        public static JObject ToJObject(this string json)
         {
-            return Json == null ? JObject.Parse("{}") : JObject.Parse(Json.Replace("&nbsp;", ""));
+            return json == null ? JObject.Parse("{}") : JObject.Parse(json.Replace("&nbsp;", ""));
         }
     }
 }
